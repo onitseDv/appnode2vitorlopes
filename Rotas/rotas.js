@@ -17,9 +17,9 @@ module.exports = rotas;
 rotas.get('/produtos', (requisicao, resposta) => {
     //return resposta.json(itemProduto)
     knex
-        .select('*')
-        .from('produto')
-        .then(results =>{
+        .select ('*')
+        .from ('produto')
+        .then (results =>{
             resposta.status(200).json(results)
         })
         .catch (err => {
