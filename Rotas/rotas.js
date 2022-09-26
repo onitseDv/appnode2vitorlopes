@@ -2,14 +2,29 @@
 const express = require ('express');
 const rotas = express.Router(); //biblioteca router do express
 
+const knex = require ('knex')({
+    client: 'pg',
+    connectionString: 'postgres://hfyazzznsxtayn:d7c0d134c3c1f40fd84ce7c1b4b33c53b63e49fd2d82d3fccda87322e741da49@ec2-18-209-78-11.compute-1.amazonaws.com:5432/d7iuucfc9vrjfd',
+    ssl:{rejectUnauthorized: false},
+});
+
+
 const itemProduto = require ('../data/produtos.json'); //informações
 
 module.exports = rotas;
 
 //teste: http://localhost:3000/produtos/
 rotas.get('/produtos', (requisicao, resposta) => {
-    return resposta.json(itemProduto)
-    //return resposta.json({itemProduto})
+    //return resposta.json(itemProduto)
+    knex
+        .select('*')
+        .from('produto')
+        .then(results =>{
+            resposta.status(200).json(results)
+        })
+        .catch (err => {
+            resposta.status(500).json({message: `Erro ao obter produtos: ${err.message}`})
+        })
 });
 
 
