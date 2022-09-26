@@ -35,3 +35,6 @@
 
 8
     npm install knex --save
+
+9
+    npm install pg
