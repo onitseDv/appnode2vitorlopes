@@ -1,0 +1,37 @@
+1 
+    $ npm init -y
+
+2
+    $ npm install express dotenv knex pg bcryptjs jsonwebtoken cors
+
+3
+    $ npm install -g nodemon 
+    OBS: após a instalação do nodemon, tem que atualizar a parte de "scripts" dentro do arquivo 'package.json'
+    Deve adicionar a seguinte linha logo abaixo do "scripts", inclusive com a vírgula: 
+    "start": "nodemon server.js", 
+
+4
+    Inicializar o servidor - http://localhost:3000/app/
+    4.1 
+        inicializar com o node
+        $ node server.js
+    4.2
+        inicializar com o nodemon 
+        $ npm start
+
+5
+    npm install -g heroku
+
+6 
+    GIT: https://github.com/onitseDv/NodeJS---atv1-PUC
+    HEROKU: https://dashboard.heroku.com/apps/appnode1-vitorlopes
+            https://appnode1-vitorlopes.herokuapp.com/
+
+7 
+    /*commit no heroku, após vincular o repositorio github - O comando "git push remote master" não está funcionando*/
+    git add .
+    git commit -m "commit"
+    git push heroku master
+
+8
+    npm install knex --save
