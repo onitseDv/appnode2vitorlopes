@@ -30,7 +30,8 @@ rotas.get('/produtos', (requisicao, resposta) => {
 
 //teste: http://localhost:3000/produtos/id-aqui
 rotas.get('/produtos/:id', (requisicao, resposta) => {
-    const id = requisicao.params.id
+    const identificador = requisicao.params.id
+    /*
     for(let produto_search of itemProduto){
         if(produto_search.id === id){
             resposta.json(produto_search)
@@ -38,6 +39,23 @@ rotas.get('/produtos/:id', (requisicao, resposta) => {
         }
     }
     resposta.status(404).send('Produto não encontrado!')
+    */
+    knex
+        .select('*')
+        .from('produto')
+        .where({id: identificador})
+        .then(results =>{
+            if(results.length){
+                let produto = results[0]
+                resposta.status(200).json(results)
+            }else{
+                resposta.status(404).json({message: `Prroduto não encontrado`})
+            }
+            
+        })
+        .catch (err => {
+            resposta.status(500).json({message: `Erro ao obter produtos: ${err.message}`})
+        })
 })
 
 
