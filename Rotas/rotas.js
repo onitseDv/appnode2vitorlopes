@@ -4,8 +4,10 @@ const rotas = express.Router(); //biblioteca router do express
 
 const knex = require ('knex')({
     client: 'pg',
-    connectionString: 'postgres://hfyazzznsxtayn:d7c0d134c3c1f40fd84ce7c1b4b33c53b63e49fd2d82d3fccda87322e741da49@ec2-18-209-78-11.compute-1.amazonaws.com:5432/d7iuucfc9vrjfd',
-    ssl:{rejectUnauthorized: false},
+    connection:{
+        connectionString: 'postgres://hfyazzznsxtayn:d7c0d134c3c1f40fd84ce7c1b4b33c53b63e49fd2d82d3fccda87322e741da49@ec2-18-209-78-11.compute-1.amazonaws.com:5432/d7iuucfc9vrjfd',
+        ssl:{rejectUnauthorized: false},
+    }
 });
 
 
@@ -19,7 +21,7 @@ rotas.get('/produtos', (requisicao, resposta) => {
     knex
         .select ('*')
         .from ('produto')
-        .then (results =>{
+        .then (results => {
             resposta.status(200).json(results)
         })
         .catch (err => {
@@ -30,8 +32,8 @@ rotas.get('/produtos', (requisicao, resposta) => {
 
 //teste: http://localhost:3000/produtos/id-aqui
 rotas.get('/produtos/:id', (requisicao, resposta) => {
-    const identificador = requisicao.params.id
     /*
+    const identificador = requisicao.params.id
     for(let produto_search of itemProduto){
         if(produto_search.id === id){
             resposta.json(produto_search)
@@ -40,6 +42,7 @@ rotas.get('/produtos/:id', (requisicao, resposta) => {
     }
     resposta.status(404).send('Produto não encontrado!')
     */
+   let identificador = parseInt(requisicao.params.id)
     knex
         .select('*')
         .from('produto')
@@ -61,15 +64,8 @@ rotas.get('/produtos/:id', (requisicao, resposta) => {
 
 //teste: POST pelo postman com o endpoint: http://localhost:3000/produtos
 //       com a mesma estrutura que o array possui
-/* outra maneira de encontrar o max id. da erro ao exibir resposta.send(max) pq nao é obj json
-    const ids = itemProduto.map(object => {
-        return object.id;
-    });  
-    //resposta.send(ids)
-    const max = Math.max(...ids);
-    console.log(max)
-*/
 rotas.post('/produtos/adicionarProduto', (requisicao, resposta) => {
+    /*
     const body = requisicao.body
     if(!body.descricao){
         return resposta.status(400).end('Descrição do produto não pode ser nula!')
@@ -98,11 +94,25 @@ rotas.post('/produtos/adicionarProduto', (requisicao, resposta) => {
             resposta.status(400).end(`Produto ${requisicao.body.descricao} já existente`)
         }
     }
+    */
+    if(requisicao.body){
+        knex ('produto') 
+            .insert({ 
+                descricao: requisicao.body.descricao,  
+                valor: requisicao.body.valor,  
+                marca: requisicao.body.marca
+        }, ['id']) 
+        .then((results) => { 
+            let produtos = results[0] 
+            resposta.status(201).json({message: `Produto cadastrado com sucesso` })  
+            return 
+        }) 
+        .catch(err => { 
+            resposta.status(500).json({message: `Erro ao cadastrar produto: ${err.message}`}) 
+        })    
+    }
 });
  
-const findItem = id => {
-    return itemProduto.find(item => item.id == id);
-};
 
 //teste: http://localhost:3000/produtos/alteraProduto/id-aqui  
 rotas.put('/produtos/alteraProduto/:id', (requisicao, resposta) => {
