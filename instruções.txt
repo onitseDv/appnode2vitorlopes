@@ -23,9 +23,9 @@
     npm install -g heroku
 
 6 
-    GIT: https://github.com/onitseDv/NodeJS---atv1-PUC
-    HEROKU: https://dashboard.heroku.com/apps/appnode1-vitorlopes
-            https://appnode1-vitorlopes.herokuapp.com/
+    GIT: https://github.com/onitseDv/appnode2vitorlopes
+    HEROKU: https://dashboard.heroku.com/apps/appnode2vitorlopes
+            https://appnode2vitorlopes.herokuapp.com/
 
 7 
     /*commit no heroku, após vincular o repositorio github - O comando "git push remote master" não está funcionando*/
